@@ -10,16 +10,16 @@
     <title>用户管理系统</title>
 
     <!-- Bootstrap -->
-    <link href="../vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="../vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="../vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
     <!-- Animate.css -->
-    <link href="../vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="vendors/animate.css/animate.min.css" rel="stylesheet">
 
     <!-- Custom Theme Style -->
-    <link href="../build/css/custom.min.css" rel="stylesheet">
+    <link href="build/css/custom.min.css" rel="stylesheet">
 </head>
 
 <body class="login">
@@ -33,13 +33,14 @@
                 <form>
                     <h1>用户管理授权系统</h1>
                     <div>
-                        <input type="text" class="form-control" placeholder="Username" required=""/>
+                        <input id="login_username" type="text" class="form-control" placeholder="Username" required=""/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password" required=""/>
+                        <input id="login_password" type="password" class="form-control" placeholder="Password"
+                               required=""/>
                     </div>
                     <div>
-                        <a class="btn btn-default submit" href="index.html">登录</a>
+                        <a class="btn btn-default submit" id="login_a">登录</a>
                         <a class="reset_pass" href="#">忘记密码</a>
                     </div>
 
@@ -67,13 +68,13 @@
                 <form>
                     <h1>注册新用户</h1>
                     <div>
-                        <input type="text" class="form-control" placeholder="Username" required=""/>
+                        <input id="reg_username" type="text" class="form-control" placeholder="Username" required=""/>
                     </div>
                     <div>
-                        <input type="email" class="form-control" placeholder="Email" required=""/>
+                        <input id="reg_password1" type="password" class="form-control" placeholder="Password" required=""/>
                     </div>
                     <div>
-                        <input type="password" class="form-control" placeholder="Password" required=""/>
+                        <input id="reg_password1" type="password" class="form-control" placeholder="Password" required=""/>
                     </div>
                     <div>
                         <a class="btn btn-default submit" href="index.html">注册</a>
@@ -100,5 +101,56 @@
     </div>
 </div>
 </body>
+<script src="https://www.w3school.com.cn/jquery/jquery-1.11.1.min.js">
+</script>
+<script >
+    $("#login_a").click(function(){
+        var username = $("#login_username").val();
+        var password = $("#login_password").val();
+        $.ajax({
+            type: "POST",
+            url: "/api/Login",
+            contentType: "application/json;charset=utf-8",
+            data:JSON.stringify({'username':username,'password':password}),
+            dataType: "json",
+            success:function (message) {
+                if(message.code==200){
+                    localStorage.setItem("token", message.access_token);
+                    window.location.href = "index.html";
 
+                }
+                else{
+                    alert(message.message);
+                }
+            },
+            error:function (message) {
+                alert("服务器出错！");
+            }
+        });
+    });
+
+    // $("#login_a").click(function(){
+    //     var username = $("#login_username").val();
+    //     var password = $("#login_password").val();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/api/Login",
+    //         contentType: "application/json;charset=utf-8",
+    //         data:JSON.stringify({'username':username,'password':password}),
+    //         dataType: "json",
+    //         success:function (message) {
+    //             if(message.code==200){
+    //                 localStorage.setItem("token", message.access_token);
+    //                 alert(localStorage.getItem("token"));
+    //             }
+    //             else{
+    //                 alert(message.message);
+    //             }
+    //         },
+    //         error:function (message) {
+    //             alert("服务器出错！");
+    //         }
+    //     });
+    // });
+</script>
 </html>
