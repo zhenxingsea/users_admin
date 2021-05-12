@@ -74,17 +74,17 @@
                         <input id="reg_password1" type="password" class="form-control" placeholder="Password" required=""/>
                     </div>
                     <div>
-                        <input id="reg_password1" type="password" class="form-control" placeholder="Password" required=""/>
+                        <input id="reg_password2" type="password" class="form-control" placeholder="Password" required=""/>
                     </div>
                     <div>
-                        <a class="btn btn-default submit" href="index.html">注册</a>
+                        <a id="register_a" class="btn btn-default submit">注册</a>
                     </div>
 
                     <div class="clearfix"></div>
 
                     <div class="separator">
                         <p class="change_link">你已经有帐号了?
-                            <a href="#signin" class="to_register"> 登录 </a>
+                            <a id="reg_login_a" href="#signin" class="to_register"> 登录 </a>
                         </p>
 
                         <div class="clearfix"></div>
@@ -129,28 +129,29 @@
         });
     });
 
-    // $("#login_a").click(function(){
-    //     var username = $("#login_username").val();
-    //     var password = $("#login_password").val();
-    //     $.ajax({
-    //         type: "POST",
-    //         url: "/api/Login",
-    //         contentType: "application/json;charset=utf-8",
-    //         data:JSON.stringify({'username':username,'password':password}),
-    //         dataType: "json",
-    //         success:function (message) {
-    //             if(message.code==200){
-    //                 localStorage.setItem("token", message.access_token);
-    //                 alert(localStorage.getItem("token"));
-    //             }
-    //             else{
-    //                 alert(message.message);
-    //             }
-    //         },
-    //         error:function (message) {
-    //             alert("服务器出错！");
-    //         }
-    //     });
-    // });
+    $("#register_a").click(function(){
+        var username = $("#reg_username").val();
+        var password1 = $("#reg_password1").val();
+        var password2 = $("#reg_password2").val();
+        $.ajax({
+            type: "POST",
+            url: "/api/SysUsers",
+            contentType: "application/json;charset=utf-8",
+            data:JSON.stringify({'username':username,'password1':password1, 'password2':password2}),
+            dataType: "json",
+            success:function (message) {
+                if(message.code==200){
+                    alert(message.message);
+                    window.location.href = "login.html";
+                }
+                else{
+                    alert(message.message);
+                }
+            },
+            error:function (message) {
+                alert("服务器出错！");
+            }
+        });
+    });
 </script>
 </html>
